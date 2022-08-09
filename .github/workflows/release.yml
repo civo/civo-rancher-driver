@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  release:
+    types: [created, edited]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.17
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.17
+        id: go
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+
+      - name: Package
+        env:
+          LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
+        run: make
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./bin/kontainer-engine-driver-lke-darwin-amd64
+          asset_name: kontainer-engine-driver-lke-darwin-amd64
+          asset_content_type: application/octet-stream
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./bin/kontainer-engine-driver-lke-linux-amd64
+          asset_name: kontainer-engine-driver-lke-linux-amd64
+          asset_content_type: application/octet-stream
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./bin/kontainer-engine-driver-lke-linux-arm64
+          asset_name: kontainer-engine-driver-lke-linux-arm64
+          asset_content_type: application/octet-stream

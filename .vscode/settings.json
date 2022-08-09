@@ -1,0 +1,13 @@
+{
+    "go.toolsManagement.autoUpdate": true,
+    "go.autocompleteUnimportedPackages": true,
+    "go.lintTool": "revive",
+    "go.lintOnSave": "workspace",
+    "go.liveErrors": {
+        "enabled": false,
+        "delay": 500
+    },
+    "go.testEnvVars": {
+        "CIVO_API_KEY": "1nIDaZS42H441NfZROD9pdgdONNBZPQFEComMcUcmjh3rVlcTh",
+    },
+}
