@@ -16,9 +16,9 @@ if echo $TAG | grep -q dirty; then
     TAG=dev
 fi
 
-cp ../bin/kontainer-engine-driver-lke .
+cp ../bin/civo-rancher-driver .
 
-IMAGE=${REPO}/kontainer-engine-driver-lke:${TAG}
+IMAGE=${REPO}/civo-rancher-driver:${TAG}
 docker build -t ${IMAGE} .
 echo ${IMAGE} > ../dist/images
 echo Built ${IMAGE}

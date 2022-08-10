@@ -104,5 +104,5 @@ func getCivoAPIKey(g *WithT) string {
 }
 
 func generateResourceName() string {
-	return strings.Replace(uuid.New().String(), "-", "", -1)
+	return "civo-e2e-test-" + strings.Replace(uuid.New().String(), "-", "", -1)[0:15]
 }

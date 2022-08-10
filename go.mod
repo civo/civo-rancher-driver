@@ -1,4 +1,4 @@
-module github.com/linode/kontainer-engine-driver-lke
+module github.com/civo/civo-rancher-driver
 
 go 1.17
 

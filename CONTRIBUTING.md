@@ -4,13 +4,9 @@
 
 We put together the handy guide below to help you get support for your work. Read on!
 
-## I Just Want to Ask the Maintainers a Question
-
-The [Linode Community](https://www.linode.com/community/questions/) is a great place to get additional support.
-
 ## How Do I Submit A (Good) Bug Report or Feature Request
 
-Please open a [GitHub issue](https://github.com/linode/kontainer-engine-driver-lke/issues/new/choose) to report bugs or suggest features.
+Please open a [GitHub issue](https://github.com/civo/civo-rancher-driver/issues/new/choose) to report bugs or suggest features.
 
 Please accurately fill out the appropriate GitHub issue form.
 
@@ -29,20 +25,13 @@ Detailed bug reports and requests are easier for us to work with. Please include
 We follow the [fork and pull model](https://opensource.guide/how-to-contribute/#opening-a-pull-request) for open source contributions.
 
 Tips for a faster merge:
+
 * address one feature or bug per pull request.
 * large formatting changes make it hard for us to focus on your work.
 * follow language coding conventions.
 * make sure that tests pass.
 * make sure your commits are atomic, [addressing one change per commit](https://chris.beams.io/posts/git-commit/).
 * add tests!
-
-## Code of Conduct
-
-This project follows the [Linode Community Code of Conduct](https://www.linode.com/community/questions/conduct).
-
-## Vulnerability Reporting
-
-If you discover a potential security issue in this project we ask that you notify Linode Security via our [vulnerability reporting process](https://hackerone.com/linode). Please do **not** create a public github issue.
 
 ## Licensing
 

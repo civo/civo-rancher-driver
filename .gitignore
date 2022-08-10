@@ -5,5 +5,4 @@
 /.trash-cache
 /trash.lock
 /.idea
-/kontainer-engine-driver-linode
-/kontainer-engine-driver-lke
+/civo-rancher-driver
