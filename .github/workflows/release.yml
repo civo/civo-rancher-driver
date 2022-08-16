@@ -20,7 +20,7 @@ jobs:
 
       - name: Package
         env:
-          LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
+          CIVO_TOKEN: ${{ secrets.CIVO_TOKEN }}
         run: make
 
       - name: Upload Release Asset

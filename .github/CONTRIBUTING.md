@@ -4,10 +4,6 @@
 
 We put together the handy guide below to help you get support for your work. Read on!  
 
-## I Just Want to Ask the Maintainers a Question
-
-The [Linode Community](https://www.linode.com/community/questions/) is a great place to get additional support.
-
 ## How Do I Submit A (Good) Bug Report or Feature Request
 
 Please open a [github issue](https://guides.github.com/features/issues/) to report bugs or suggest features.
@@ -27,25 +23,17 @@ Detailed bug reports and requests are easier for us to work with. Please include
 We follow the [fork and pull model](https://opensource.guide/how-to-contribute/#opening-a-pull-request) for open source contributions.
 
 Tips for a faster merge:
- * address one feature or bug per pull request.
- * large formatting changes make it hard for us to focus on your work.
- * follow language coding conventions.
- * make sure that tests pass.
- * make sure your commits are atomic, [addressing one change per commit](https://chris.beams.io/posts/git-commit/).
- * add tests!
- * save your large formatting changes for a different PR, so we can focus on your work
- * explain your rationale for why this feature is needed
- * link your PR to an [open issue](https://blog.github.com/2013-05-14-closing-issues-via-pull-requests/)
 
-## Code of Conduct
-
-This project follows the [Linode Community Code of Conduct](https://www.linode.com/community/questions/conduct).
-
-## Vulnerability Reporting
-
-If you discover a potential security issue in this project we ask that you notify Linode Security via our [vulnerability reporting process](https://hackerone.com/linode). Please do **not** create a public github issue.
+* address one feature or bug per pull request.
+* large formatting changes make it hard for us to focus on your work.
+* follow language coding conventions.
+* make sure that tests pass.
+* make sure your commits are atomic, [addressing one change per commit](https://chris.beams.io/posts/git-commit/).
+* add tests!
+* save your large formatting changes for a different PR, so we can focus on your work
+* explain your rationale for why this feature is needed
+* link your PR to an [open issue](https://blog.github.com/2013-05-14-closing-issues-via-pull-requests/)
 
 ## Licensing
 
 See the [LICENSE file](/LICENSE) for our project's licensing.
-
