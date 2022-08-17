@@ -1,4 +1,4 @@
-module github.com/civo/civo-rancher-driver
+module github.com/civo/kontainer-engine-driver-civo
 
 go 1.17
 
