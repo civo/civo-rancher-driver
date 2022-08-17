@@ -7,7 +7,6 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/rancher/kontainer-engine/types"
 	"github.com/sirupsen/logrus"
 	"k8s.io/client-go/tools/clientcmd"
@@ -35,7 +34,7 @@ type state struct {
 	Region string
 	// The kubernetes version
 	K8sVersion string
-	NodePools  map[string]int // size -> count
+	NodePools  map[string]string // uuid -> size-count
 
 	// The network ID to use for the cluster
 	NetworkID string
@@ -158,7 +157,10 @@ func (d *Driver) Create(ctx context.Context, opts *types.DriverOptions, _ *types
 		return info, err
 	}
 
-	req := d.generateClusterCreateRequest(state)
+	req, err := d.generateClusterCreateRequest(state)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create cluster: %s", err)
+	}
 	logrus.Debugf("Civo api request: %#v", req)
 
 	cluster, err := client.NewKubernetesClusters(req)
@@ -210,10 +212,14 @@ func (d *Driver) Update(ctx context.Context, info *types.ClusterInfo, opts *type
 
 	if newState.NodePools != nil && !reflect.DeepEqual(newState.NodePools, state.NodePools) {
 		shouldUpdate = true
-		for t, count := range newState.NodePools {
+		for t, sc := range newState.NodePools {
+			size, count, err := getSizeCountNodePool(t, sc)
+			if err != nil {
+				return nil, err
+			}
 			updateOpts.Pools = append(updateOpts.Pools, civogo.KubernetesClusterPoolConfig{
-				ID:    uuid.New().String(),
-				Size:  t,
+				ID:    t,
+				Size:  size,
 				Count: count,
 			})
 		}
@@ -232,7 +238,7 @@ func (d *Driver) Update(ctx context.Context, info *types.ClusterInfo, opts *type
 	return info, storeState(info, state)
 }
 
-func (d *Driver) generateClusterCreateRequest(state state) *civogo.KubernetesClusterConfig {
+func (d *Driver) generateClusterCreateRequest(state state) (*civogo.KubernetesClusterConfig, error) {
 	req := civogo.KubernetesClusterConfig{
 		Name:              state.Name,
 		Region:            state.Region,
@@ -242,15 +248,19 @@ func (d *Driver) generateClusterCreateRequest(state state) *civogo.KubernetesClu
 		InstanceFirewall:  state.FirewallID,
 		// Apps?
 	}
-	for t, count := range state.NodePools {
+	for t, sc := range state.NodePools {
+		size, count, err := getSizeCountNodePool(t, sc)
+		if err != nil {
+			return nil, err
+		}
 		req.Pools = append(req.Pools, civogo.KubernetesClusterPoolConfig{
-			ID:    uuid.New().String(),
-			Size:  t,
+			ID:    t,
+			Size:  size,
 			Count: count,
 		})
 	}
 
-	return &req
+	return &req, nil
 }
 
 // PostCheck : This func must populate the ClusterInfo.serviceAccountToken field with a service account token with sufficient permissions for Rancher to manage the cluster.
@@ -291,8 +301,12 @@ func (d *Driver) PostCheck(ctx context.Context, info *types.ClusterInfo) (*types
 
 	info.Version = state.K8sVersion
 	count := 0
-	for _, poolSize := range state.NodePools {
-		count += poolSize
+	for uuid, sc := range state.NodePools {
+		_, cnt, err := getSizeCountNodePool(uuid, sc)
+		if err != nil {
+			return nil, err
+		}
+		count += cnt
 	}
 	info.NodeCount = int64(count)
 

@@ -147,7 +147,7 @@ func generateServiceAccountTokenForCivo(kubeconfig string) (string, error) {
 // SetDriverOptions implements driver interface
 func getStateFromOpts(driverOptions *types.DriverOptions) (state, error) {
 	s := state{
-		NodePools: map[string]int{},
+		NodePools: map[string]string{},
 		ClusterInfo: types.ClusterInfo{
 			Metadata: map[string]string{},
 		},
@@ -167,11 +167,11 @@ func getStateFromOpts(driverOptions *types.DriverOptions) (state, error) {
 		for _, part := range pools.(*types.StringSlice).Value {
 			kv := strings.Split(part, "=")
 			if len(kv) == 2 {
-				count, err := strconv.Atoi(kv[1])
+				size, count, err := getSizeCountNodePool(kv[0], kv[1])
 				if err != nil {
-					return state{}, fmt.Errorf("failed to parse node count %v for pool of node size %s", kv[1], kv[0])
+					return state{}, err
 				}
-				s.NodePools[kv[0]] = count
+				s.NodePools[kv[0]] = fmt.Sprintf("%s-%d", size, count)
 			}
 		}
 	}
@@ -183,7 +183,11 @@ func (s *state) validate() error {
 	if len(s.NodePools) == 0 {
 		return fmt.Errorf("at least one NodePool is required")
 	}
-	for t, count := range s.NodePools {
+	for t, sc := range s.NodePools {
+		_, count, err := getSizeCountNodePool(t, sc)
+		if err != nil {
+			return err
+		}
 		if count <= 0 {
 			return fmt.Errorf("at least 1 node required for NodePool=%s", t)
 		}
@@ -246,4 +250,22 @@ func WaitForClusterActive(ctx context.Context, client *civogo.Client, clusterID 
 			return fmt.Errorf("Error waiting for cluster %s to be active: %s", clusterID, ctx.Err())
 		}
 	}
+}
+
+func getSizeCountNodePool(uuid, part string) (string, int, error) {
+	var err error
+	count := 0
+	size := ""
+	kv := strings.Split(part, "-")
+	if len(kv) == 2 {
+		size = kv[0]
+		count, err = strconv.Atoi(kv[1])
+		if err != nil {
+			return size, count, fmt.Errorf("failed to parse node count %v for pool %s of node size %s", kv[1], uuid, kv[0])
+		}
+	} else {
+		return size, count, fmt.Errorf("failed to parse size count format")
+	}
+
+	return size, count, nil
 }

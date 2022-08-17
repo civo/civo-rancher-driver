@@ -42,7 +42,9 @@ func TestDriver(t *testing.T) {
 		StringSliceOptions: map[string]*types.StringSlice{
 			"node-pools": {
 				Value: []string{
-					"g3.medium=3",
+					"d7628ae1-80e5-475c-82d9-7db259a8b50b=g3.medium-1",
+					"65c6e871-4a58-4957-a770-536093d2f3b9=g3.medium-1",
+					"a84fdae5-d0ca-4d8c-983d-b82eff4185bf=g3.small-1",
 				},
 			},
 		},
