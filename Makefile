@@ -1,28 +1,11 @@
-TARGETS := $(shell ls scripts)
+.PHONY: build clean
 
-TEST_TIMEOUT := 25m
+build:
+	mkdir -p ./bin
+	@echo "Building binary for linux-amd64"
+	export GOOS=linux GOARCH=amd64
+	go build -o bin/civo-rancher-driver-linux-amd64
+	@echo "Built linux-amd64"
 
-.dapper:
-	@echo Downloading dapper
-	@curl -sL https://releases.rancher.com/dapper/latest/dapper-`uname -s`-`uname -m` > .dapper.tmp
-	@@chmod +x .dapper.tmp
-	@./.dapper.tmp -v
-	@mv .dapper.tmp .dapper
-
-$(TARGETS): .dapper
-	./.dapper $@
-
-trash: .dapper
-	./.dapper -m bind trash
-
-trash-keep: .dapper
-	./.dapper -m bind trash -k
-
-deps: trash
-
-test:
-	go test $(TEST_ARGS) -timeout $(TEST_TIMEOUT)
-
-.DEFAULT_GOAL := ci
-
-.PHONY: $(TARGETS)
+clean:
+	rm -rf ./bin

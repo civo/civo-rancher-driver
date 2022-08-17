@@ -1,9 +1,4 @@
-/.dapper
 /bin
-/dist
 *.swp
-/.trash-cache
-/trash.lock
-/.idea
 /civo-rancher-driver
 /kontainer-engine-driver-civo
