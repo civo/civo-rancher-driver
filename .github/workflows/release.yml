@@ -27,6 +27,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./bin/kontainer-engine-driver-civo-linux-arm64
-          asset_name: kontainer-engine-driver-civo-linux-arm64
+          asset_path: ./bin/kontainer-engine-driver-civo-linux-amd64
+          asset_name: kontainer-engine-driver-civo-linux-amd64
           asset_content_type: application/octet-stream
