@@ -10,43 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.17
-        uses: actions/setup-go@v1
+        uses: actions/setup-go@v2
         with:
           go-version: 1.17
         id: go
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Package
-        env:
-          CIVO_TOKEN: ${{ secrets.CIVO_TOKEN }}
         run: make
 
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./bin/civo-rancher-driver-darwin-amd64
-          asset_name: civo-rancher-driver-darwin-amd64
-          asset_content_type: application/octet-stream
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./bin/civo-rancher-driver-linux-amd64
-          asset_name: civo-rancher-driver-linux-amd64
-          asset_content_type: application/octet-stream
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./bin/civo-rancher-driver-linux-arm64
-          asset_name: civo-rancher-driver-linux-arm64
+          asset_path: ./bin/kontainer-engine-driver-civo-linux-amd64
+          asset_name: kontainer-engine-driver-civo-linux-amd64
           asset_content_type: application/octet-stream
